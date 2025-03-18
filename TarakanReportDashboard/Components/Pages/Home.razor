@@ -1,0 +1,29 @@
+﻿@page "/"
+@inject IDbContextFactory<Models.TarakanContext> DbFactory
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        //using var _context = new Models.TarakanContext();
+
+        //var result = await _context.Patients.ToListAsync();
+
+
+        if (context.Patients is not null)
+        {
+            // var contact = await context.Patients.ToListAsync();
+
+            // if (contact is not null)
+            // {
+
+            // }
+        }
+    }    
+}

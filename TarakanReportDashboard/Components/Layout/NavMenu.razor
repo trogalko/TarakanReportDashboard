@@ -1,0 +1,113 @@
+﻿@inject IHostEnvironment Env
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        @if (Env.IsDevelopment())
+        {
+            <a class="navbar-brand" href="/">TarakanReportDashboard</a>
+        }
+        else
+        {
+            <a class="navbar-brand" href="dashboardreport/">TarakanReportDashboard</a>
+        }        
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="nav flex-column">
+        <div class="nav-item px-3">
+            @if (Env.IsDevelopment())
+            {
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                </NavLink>
+            }
+            else
+            {
+                <NavLink class="nav-link" href="dashboard/" Match="NavLinkMatch.All">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                </NavLink>
+            }            
+        </div>
+
+        <div class="nav-item px-3">
+            @if (Env.IsDevelopment())
+            {
+                <NavLink class="nav-link" href="/counter">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+                </NavLink>
+            }
+            else
+            {
+                <NavLink class="nav-link" href="dashboardreport/counter">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+                </NavLink>
+            }            
+        </div>
+
+        <div class="nav-item px-3">
+            @if (Env.IsDevelopment())
+            {
+                <NavLink class="nav-link" href="/weather">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+                </NavLink>
+            }
+            else
+            {
+                <NavLink class="nav-link" href="dashboardreport/weather">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+                </NavLink>
+            }            
+        </div>
+
+        <div class="nav-item px-3">
+            @if (Env.IsDevelopment())
+            {
+                <NavLink class="nav-link" href="/profile">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Profile
+                </NavLink>
+            }
+            else
+            {
+                <NavLink class="nav-link" href="dashboardreport/profile">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Profile
+                </NavLink>
+            }            
+        </div>
+
+        <div class="nav-item px-3">
+            <AuthorizeView>
+                <NotAuthorized>
+                    @if (Env.IsDevelopment())
+                    {
+                        <NavLink class="nav-link" href="/auth/login">
+                            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Login
+                        </NavLink>
+                    }
+                    else
+                    {
+                        <NavLink class="nav-link" href="dashboardreport/auth/login">
+                            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Login
+                        </NavLink>
+                    }                    
+                </NotAuthorized>
+                <Authorized>
+                    @if (Env.IsDevelopment())
+                    {
+                        <NavLink class="nav-link" href="/auth/logout">
+                            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Logout
+                        </NavLink>
+                    }
+                    else
+                    {
+                        <NavLink class="nav-link" href="dashboardreport/auth/logout">
+                            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Logout
+                        </NavLink>
+                    }                    
+                </Authorized>
+            </AuthorizeView>
+        </div>
+    </nav>
+</div>
+
