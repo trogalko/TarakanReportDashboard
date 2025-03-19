@@ -11,13 +11,15 @@
         <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
         <link rel="stylesheet" href="@Assets["app.css"]" />
         <link rel="stylesheet" href="@Assets["TarakanReportDashboard.styles.css"]" />
+        <link rel="stylesheet" href="@Assets["_content/Syncfusion.Blazor/bootstrap5.css"]" />
     }
     else
     {
-        <base href="dashboardreport/" />
+        <base href="/" />
         <link rel="stylesheet" href="@Assets["dashboardreport/lib/bootstrap/dist/css/bootstrap.min.css"]" />
         <link rel="stylesheet" href="@Assets["dashboardreport/app.css"]" />
         <link rel="stylesheet" href="@Assets["dashboardreport/TarakanReportDashboard.styles.css"]" />
+        <link href="dashboardreport/_content/Syncfusion.Blazor/styles/bootstrap5.css" rel="stylesheet" />
     }
 
     <ImportMap />
@@ -30,10 +32,12 @@
     @if (Env.IsDevelopment())
     {
         <script src="_framework/blazor.web.js"></script>
+        <script src="_content/Syncfusion.Blazor.Core/scripts/syncfusion-blazor.min.js" type="text/javascript"></script>
     }
     else
     {
         <script src="dashboardreport/_framework/blazor.web.js"></script>
+        <script src="dashboardreport/_content/Syncfusion.Blazor/scripts/syncfusion-blazor.min.js" type="text/javascript"></script>
     }    
 </body>
 

@@ -3,7 +3,10 @@
 @using System.ComponentModel.DataAnnotations
 @using System.Security.Claims
 @using Microsoft.AspNetCore.Authentication
+@using RestSharp
 @inject NavigationManager NavigationManager
+@inject IDbContextFactory<Models.TarakanContext> DbFactory
+@inject IConfiguration Configuration
 
 <div class="row">
     <div class="col-sm-5 mx-auto">
@@ -11,8 +14,8 @@
             <DataAnnotationsValidator />
             <div class="mb-3">
                 <label>Username</label>
-                <InputText @bind-Value="Model.Email" class="form-control" />
-                <ValidationMessage For="()=> Model.Email" />
+                <InputText @bind-Value="Model.UserID" class="form-control" />
+                <ValidationMessage For="()=> Model.UserID" />
             </div>
             <div class="mb-3">
                 <label>Password</label>
@@ -47,26 +50,72 @@
         // Validate Model.Email and Model.Pssword against your database
         //await Task.Delay(2000);
 
-        LoggedInUserModel user = new LoggedInUserModel(1, "Abhay", "abcd@email.com");
+        using var context = DbFactory.CreateDbContext(); 
 
-        var claims = user.ToClaims();
-        var identity = new ClaimsIdentity(claims, Constants.AuthScheme);
-        var principal = new ClaimsPrincipal(identity);
+        if (context is not null)
+        {
+            var appUser = await context.AppUsers.SingleAsync(x => x.UserId == Model.UserID);
 
-        var authProperties = new AuthenticationProperties
+            if (appUser is not null)
             {
-                IsPersistent = Model.RememberMe
-            };
+                var client = new RestClient(Configuration.GetSection("Parameters").GetSection("urlTarakanRest").Value + "Login/Validate");
+                var request = new RestRequest();
+                request.Method = Method.Post;
+                request.AddParameter("Content-Type", "Application/x-www-form-urlencoded", ParameterType.HttpHeader);
+                request.AddParameter("userid", Model.UserID);
+                request.AddParameter("password", Model.Password);
+                var response = await client.ExecuteAsync(request);
+                if (response != null && response.Content != null)
+                {
+                    var _appUser = System.Text.Json.JsonSerializer.Deserialize<JsonModels.LoginResponse.Root>(response.Content);
+                    if (_appUser != null && _appUser.metadata.code == 200)
+                    {
+                        LoggedInUserModel user = new LoggedInUserModel(1, _appUser.response.userName, Model.Password);
+                        var claims = user.ToClaims();
+                        var identity = new ClaimsIdentity(claims, Constants.AuthScheme);
+                        var principal = new ClaimsPrincipal(identity);
+                        var authProperties = new AuthenticationProperties
+                            {
+                                IsPersistent = Model.RememberMe
+                            };
+                        await HttpContext.SignInAsync(Constants.AuthScheme, principal, authProperties);
+                        NavigationManager.NavigateTo(ReturnUrl);
+                    }
+                }else
+                {
+                    @if (Env.IsDevelopment())
+                    {
+                        NavigationManager.NavigateTo("/", replace: true);
+                    }
+                    else
+                    {
+                        NavigationManager.NavigateTo("dashboardreport/", replace: true);
+                    }
+                }
+            }
+        }
 
-        await HttpContext.SignInAsync(Constants.AuthScheme, principal, authProperties);
-        NavigationManager.NavigateTo(ReturnUrl);
+
+
+        // LoggedInUserModel user = new LoggedInUserModel(1, Model.UserID, Model.Password);
+
+        // var claims = user.ToClaims();
+        // var identity = new ClaimsIdentity(claims, Constants.AuthScheme);
+        // var principal = new ClaimsPrincipal(identity);
+
+        // var authProperties = new AuthenticationProperties
+        //     {
+        //         IsPersistent = Model.RememberMe
+        //     };
+
+        // await HttpContext.SignInAsync(Constants.AuthScheme, principal, authProperties);
+        // NavigationManager.NavigateTo(ReturnUrl);
     }
 
     class LoginModel
     {
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; } = "";
+        [Required]    
+        public string UserID { get; set; } = "";
 
         [Required]
         [DataType(DataType.Password)]

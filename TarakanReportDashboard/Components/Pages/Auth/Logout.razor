@@ -1,6 +1,7 @@
 ﻿@page "/auth/logout"
 @using Microsoft.AspNetCore.Authentication
 @inject NavigationManager NavigationManager
+@inject IHostEnvironment Env
 <p>Logging out...</p>
 
 @code {
@@ -10,6 +11,13 @@
     protected override async Task OnInitializedAsync()
     {
         await HttpContext.SignOutAsync(Constants.AuthScheme);
-        NavigationManager.NavigateTo("/", replace: true);
+        @if (Env.IsDevelopment())
+        {
+            NavigationManager.NavigateTo("/", replace: true);
+        }
+        else
+        {
+            NavigationManager.NavigateTo("dashboardreport/", replace: true);
+        }        
     }
 }

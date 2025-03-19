@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Syncfusion.Blazor.Navigations
 @inject IDbContextFactory<Models.TarakanContext> DbFactory
 
 <PageTitle>Home</PageTitle>
@@ -10,20 +11,11 @@ Welcome to your new app.
 @code{
     protected override async Task OnInitializedAsync()
     {
-        using var context = DbFactory.CreateDbContext();
-        //using var _context = new Models.TarakanContext();
-
-        //var result = await _context.Patients.ToListAsync();
-
+        using var context = DbFactory.CreateDbContext();    
 
         if (context.Patients is not null)
         {
-            // var contact = await context.Patients.ToListAsync();
-
-            // if (contact is not null)
-            // {
-
-            // }
+            var contact = await context.Patients.SingleAsync(x => x.PatientId == "123456");
         }
     }    
 }

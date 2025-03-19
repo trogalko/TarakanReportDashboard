@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.Blazor;
 using TarakanReportDashboard;
 using TarakanReportDashboard.Components;
 
@@ -33,6 +35,8 @@ builder.Services.AddAuthentication(Constants.AuthScheme)
         options.SlidingExpiration = true;
     });
 
+builder.Services.AddSyncfusionBlazor();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,6 +46,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("OTY2OEAzMjM4MkUzMjJFMzNlQy94VWxTUmtzakV6eVJ1YUcxa2NKZHIyN2VQckRDNUU3TEN0SHVHNlVrPQ==");
 
 app.UseHttpsRedirection();
 
@@ -53,7 +59,18 @@ app.UseAuthentication()
 app.UseAntiforgery();
 
 app.MapStaticAssets();
-app.MapRazorComponents<App>()
+
+var components = app.MapRazorComponents<TarakanReportDashboard.Components.App>()
     .AddInteractiveServerRenderMode();
+
+components.Add(e => {
+    if (e is RouteEndpointBuilder rb)
+    {
+        if (rb.RoutePattern!.RawText!.Contains("_blazor"))
+        {
+            rb.Metadata.Add(new AllowAnonymousAttribute());
+        }
+    }
+});
 
 app.Run();
