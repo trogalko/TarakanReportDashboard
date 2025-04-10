@@ -1,6 +1,7 @@
 ﻿@page "/"
-@using Syncfusion.Blazor.Navigations
+@* @using Syncfusion.Blazor.Navigations *@
 @inject IDbContextFactory<Models.TarakanContext> DbFactory
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>Home</PageTitle>
 
@@ -8,9 +9,16 @@
 
 Welcome to your new app.
 
+@* @if (_authState != null)
+{
+    _authState.User.Claims.First();
+} *@
+
 @code{
+    //private AuthenticationState _authState;
+    //var _authState = AuthenticationStateProvider.GetAuthenticationStateAsync();
     protected override async Task OnInitializedAsync()
-    {
+    {    
         using var context = DbFactory.CreateDbContext();    
 
         if (context.Patients is not null)

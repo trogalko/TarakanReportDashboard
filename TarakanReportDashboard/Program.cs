@@ -1,14 +1,20 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Syncfusion.Blazor;
+//using Syncfusion.Blazor;
 using TarakanReportDashboard;
 using TarakanReportDashboard.Components;
+using TarakanReportDashboard.Services;
+using BitzArt.Blazor.Auth.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.AddBlazorBootstrap();
+builder.AddBlazorAuth<TarakanAuthenticationService>();
+builder.Services.AddScoped<JwtService>();
+
 
 var connectionString =
     builder.Configuration.GetConnectionString("DefaultConnection")
@@ -17,7 +23,7 @@ var connectionString =
 builder.Services.AddDbContextFactory<TarakanReportDashboard.Models.TarakanContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddCascadingAuthenticationState();
+//builder.Services.AddCascadingAuthenticationState();
 
 builder.Services.AddAuthentication(Constants.AuthScheme)
     .AddCookie(Constants.AuthScheme, options =>
@@ -35,7 +41,7 @@ builder.Services.AddAuthentication(Constants.AuthScheme)
         options.SlidingExpiration = true;
     });
 
-builder.Services.AddSyncfusionBlazor();
+//builder.Services.AddSyncfusionBlazor();
 
 var app = builder.Build();
 
@@ -47,7 +53,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("OTY2OEAzMjM4MkUzMjJFMzNlQy94VWxTUmtzakV6eVJ1YUcxa2NKZHIyN2VQckRDNUU3TEN0SHVHNlVrPQ==");
+//Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("OTY2OEAzMjM4MkUzMjJFMzNlQy94VWxTUmtzakV6eVJ1YUcxa2NKZHIyN2VQckRDNUU3TEN0SHVHNlVrPQ==");
 
 app.UseHttpsRedirection();
 
@@ -59,6 +65,8 @@ app.UseAuthentication()
 app.UseAntiforgery();
 
 app.MapStaticAssets();
+
+app.MapAuthEndpoints();
 
 var components = app.MapRazorComponents<TarakanReportDashboard.Components.App>()
     .AddInteractiveServerRenderMode();

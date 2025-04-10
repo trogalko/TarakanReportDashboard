@@ -4,10 +4,13 @@
 @using System.Security.Claims
 @using Microsoft.AspNetCore.Authentication
 @using RestSharp
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject NavigationManager NavigationManager
 @inject IDbContextFactory<Models.TarakanContext> DbFactory
 @inject IConfiguration Configuration
 @inject IHostEnvironment Env
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ProtectedSessionStorage ProtectedSessionStore
 
 <div class="row">
     <div class="col-sm-5 mx-auto">
@@ -36,6 +39,7 @@
 
 @code {
     private const string LoginForm = "login-form";
+    [Inject] BitzArt.Blazor.Auth.IUserService<Services.SignInPayload> UserService { get; set; }
 
     [SupplyParameterFromForm(FormName = LoginForm)]
     private LoginModel Model { get; set; } = new();
@@ -45,6 +49,9 @@
 
     [SupplyParameterFromQuery]
     public string ReturnUrl { get; set; } = "/";
+
+    AuthenticationState? authenticationState;
+    bool isAuthenticated;
 
     private async Task LoginUserAsync()
     {        
@@ -79,8 +86,29 @@
                             {
                                 IsPersistent = Model.RememberMe
                             };
-                        await HttpContext.SignInAsync(Constants.AuthScheme, principal, authProperties);
-                        NavigationManager.NavigateTo(ReturnUrl);
+                        var signInPayload = new SignInPayload(Model.UserID, _appUser.response.userName, "");
+                        var authenticationResult = await UserService.SignInAsync(signInPayload);
+                        var userState = authenticationResult.Data;
+
+                        authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+                        if (authenticationState != null && authenticationState.User != null && authenticationState.User.Identity != null)
+                        {
+                            isAuthenticated = authenticationState.User.Identity.IsAuthenticated;
+                            await ProtectedSessionStore.SetAsync("IsAuthenticated", isAuthenticated);
+                        }
+
+                        //await HttpContext.SignInAsync(Constants.AuthScheme, principal, authProperties);
+
+                        // UserId = r.UserId,
+                        // UserName = r.UserName,
+                        // LastUpdateByUserId = r.ProgramId,
+                        // LicenseNo = r.ProgramName,
+                        // Password = r.NavigateUrl,
+                        // PasswordMd5 = r.UserGroupId
+                        var authorizedModules = getAllAuthoredModule(Model.UserID);
+
+                        NavigationManager.NavigateTo("/", true);
+                        //NavigationManager.NavigateTo(ReturnUrl);
                     }
                 }else
                 {
@@ -111,6 +139,46 @@
 
         // await HttpContext.SignInAsync(Constants.AuthScheme, principal, authProperties);
         // NavigationManager.NavigateTo(ReturnUrl);
+    }
+
+    private List<Models.AppUser> getAllAuthoredModule(string userID)
+    {        
+        using (var context = DbFactory.CreateDbContext())
+        {
+            var result = (from d in context.AppUsers
+                          join c in context.AppUserUserGroups on d.UserId equals c.UserId
+                          join b in context.AppUserGroupPrograms on c.UserGroupId equals b.UserGroupId
+                          join a in context.AppPrograms on b.ProgramId equals a.ProgramId
+                          where a.NavigateUrl.Contains("trdx") && d.UserId == userID
+                          select new
+                          {
+                              d.UserId,
+                              d.UserName,
+                              a.ProgramId,
+                              a.ProgramName,
+                              a.NavigateUrl,
+                              b.UserGroupId
+                          })
+            .Distinct()
+            .OrderBy(a => a.ProgramName)
+            .ThenBy(d => d.UserName)
+            .ToList();
+            var auL = new List<Models.AppUser>();
+            foreach (var r in result)
+            {
+                var au = new Models.AppUser
+                {
+                        UserId = r.UserId,
+                        UserName = r.UserName,
+                        LastUpdateByUserId = r.ProgramId,
+                        LicenseNo = r.ProgramName,
+                        Password = r.NavigateUrl,
+                        PasswordMd5 = r.UserGroupId
+                };
+                auL.Add(au);
+            }           
+            return auL;
+        }
     }
 
     class LoginModel
