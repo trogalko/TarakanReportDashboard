@@ -1,8 +1,10 @@
 ﻿@inherits LayoutComponentBase
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @* @inject IHttpContextAccessor ctxAccessor *@
+@inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject ProtectedSessionStorage ProtectedSessionStore
+@implements IDisposable
 
 <div class="bb-page">
 
@@ -12,9 +14,9 @@
     BadgeText="Tarakan"
     DataProvider="Sidebar2DataProvider" />
 
-    <main>
+    <main>        
         <div class="bb-top-row px-4 d-flex justify-content-end">
-            <ThemeSwitcher />
+            <ThemeSwitcher Position="DropdownMenuPosition.End"/>
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
 
@@ -36,6 +38,95 @@
     [Inject] BitzArt.Blazor.Auth.IUserService<Services.SignInPayload>? UserService { get; set; }
     AuthenticationState? authenticationState;
     bool isAuthenticated;
+
+    //Timer Related
+    private int currentCount = 0;
+    private TimeSpan elapsedTime = TimeSpan.Zero;
+    private bool isRunning = false;
+    private System.Timers.Timer? timer;
+    private DateTime startTime;
+
+    private void StartTimer()
+    {
+        if (!isRunning)
+        {
+            isRunning = true;
+            startTime = DateTime.Now - elapsedTime;
+
+            timer = new System.Timers.Timer(60000);
+            timer.Elapsed += OnTimerElapsed;
+            timer.Start();
+        }
+    }
+
+    private void StopTimer()
+    {
+        isRunning = false;
+        timer?.Stop();
+    }
+
+    private void ResetTimer()
+    {
+        StopTimer();
+        currentCount = 0;
+        elapsedTime = TimeSpan.Zero;
+    }
+
+    private async void OnTimerElapsed(object? sender, System.Timers.ElapsedEventArgs e)
+    {
+        currentCount++;
+
+        elapsedTime = DateTime.Now - startTime;
+
+        authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (authenticationState != null && authenticationState.User != null && authenticationState.User.Identity != null)
+        {
+            var claims = authenticationState.User.Claims;
+            foreach (var claim in claims)
+            {
+                if (claim.Type == "exp")
+                {
+                    var expDate = claim.Value;
+                    var expiredDateOffset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(expDate));
+                    var expiredDate = expiredDateOffset.LocalDateTime;
+                    if (expiredDate < DateTime.Now)
+                    {
+                        StopTimer();
+                        await ProtectedSessionStore.SetAsync("IsAuthenticated", false);
+                        await UserService.SignOutAsync();
+                        NavigationManager.NavigateTo("/auth/login", true);
+                        await InvokeAsync(StateHasChanged);
+                        break;
+                    }
+                    else
+                    {
+                        isAuthenticated = authenticationState.User.Identity.IsAuthenticated;
+                        await ProtectedSessionStore.SetAsync("IsAuthenticated", isAuthenticated);
+                    }
+                }
+            }
+        }
+        else
+        {
+            StopTimer();
+            await ProtectedSessionStore.SetAsync("IsAuthenticated", false);
+            await UserService.SignOutAsync();
+            NavigationManager.NavigateTo("/auth/login", true);
+        }
+        if (currentCount >= 30)
+        {
+            StopTimer();
+        }
+
+        // Use SynchronizationContext to marshal back to the UI thread
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        timer?.Dispose();
+    }
+    //End Timer Related
 
     private async Task<Sidebar2DataProviderResult> Sidebar2DataProvider(Sidebar2DataProviderRequest request)
     {
@@ -108,6 +199,7 @@
                 await ProtectedSessionStore.SetAsync("IsAuthenticated", isAuthenticated);
             }
         }
+        StartTimer();
     }
 
 }

@@ -1,12 +1,16 @@
 ﻿@page "/auth/logout"
 @using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject NavigationManager NavigationManager
 @inject IHostEnvironment Env
+@inject ProtectedSessionStorage ProtectedSessionStore
 <p>Logging out...</p>
 
-@code {
-    [CascadingParameter]
-    public HttpContext HttpContext { get; set; }
+@code 
+{
+        [Inject] BitzArt.Blazor.Auth.IUserService<Services.SignInPayload> UserService { get; set; }
+        [CascadingParameter]
+        public HttpContext HttpContext { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -18,6 +22,16 @@
         else
         {
             NavigationManager.NavigateTo("dashboardreport/", replace: true);
-        }        
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await ProtectedSessionStore.SetAsync("IsAuthenticated", false);
+            await UserService.SignOutAsync();
+            NavigationManager.NavigateTo("/auth/login", true);
+        }
     }
 }

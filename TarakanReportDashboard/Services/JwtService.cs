@@ -30,7 +30,7 @@ namespace TarakanReportDashboard.Services
         {
             var now = DateTime.UtcNow;
 
-            var accessTokenDuration = new TimeSpan(hours: 0, minutes: 15, seconds: 0);
+            var accessTokenDuration = new TimeSpan(hours: 0, minutes: 2, seconds: 0);
             var accessTokenExpiresAt = now + accessTokenDuration;
             //LoggedInUserModel user = new LoggedInUserModel(1, _appUser.response.userName, Model.Password);
             var accessToken = _tokenHandler.WriteToken(new JwtSecurityToken(
@@ -40,7 +40,7 @@ namespace TarakanReportDashboard.Services
                 signingCredentials: _signingCredentials
             ));
 
-            var refreshTokenDuration = new TimeSpan(hours: 24, minutes: 0, seconds: 0);
+            var refreshTokenDuration = new TimeSpan(hours: 0, minutes: 3, seconds: 0);
             var refreshTokenExpiresAt = now + refreshTokenDuration;
             var refreshToken = _tokenHandler.WriteToken(new JwtSecurityToken(
                 notBefore: now,
