@@ -14,15 +14,15 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await HttpContext.SignOutAsync(Constants.AuthScheme);
-        @if (Env.IsDevelopment())
-        {
-            NavigationManager.NavigateTo("/", replace: true);
-        }
-        else
-        {
-            NavigationManager.NavigateTo("dashboardreport/", replace: true);
-        }
+        // await HttpContext.SignOutAsync(Constants.AuthScheme);
+        // @if (Env.IsDevelopment())
+        // {
+        //     NavigationManager.NavigateTo("/", replace: true);
+        // }
+        // else
+        // {
+        //     NavigationManager.NavigateTo("dashboardreport/", replace: true);
+        // }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

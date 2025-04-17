@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="sqlDataSource1" Width="10.906in" UnitOfMeasure="Cm" Name="userReport1" ShowSnapGrid="True" SnapGridSize="0.1cm" xmlns="http://schemas.telerik.com/reporting/2023/3.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="{&quot;@p_FromDate&quot;:&quot;2025-01-01&quot;,&quot;@p_ToDate&quot;:&quot;2025-03-01&quot;,&quot;@p_ItemType&quot;:&quot;11&quot;,&quot;@p_LocationID&quot;:&quot;L.2.1.B12&quot;}" ConnectionString="Data Source=88.88.8.92;Initial Catalog=TARAKAN;User ID=avicenna;Password=Sciadmin88" ProviderName="System.Data.SqlClient" SelectCommand="spxml_MutasiStock" SelectCommandType="StoredProcedure" Name="sqlDataSource1">
+      <Parameters>
+        <SqlDataSourceParameter DbType="DateTime" Name="@p_FromDate">
+          <Value>
+            <String>2025-01-01</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="DateTime" Name="@p_ToDate">
+          <Value>
+            <String>2025-03-01</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="AnsiString" Name="@p_ItemType">
+          <Value>
+            <String>11</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="AnsiString" Name="@p_LocationID">
+          <Value>
+            <String>L.2.1.B12</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <DetailSection Height="0.052in" Name="detailSection1">
+      <Style Visible="False" />
+    </DetailSection>
+    <PageFooterSection Height="0.2in" Name="pageFooterSection1">
+      <Items>
+        <TextBox Width="4.629in" Height="0.2in" Left="6.252in" Top="0in" Value="='Page : ' + PageNumber + '/' + PageCount" Name="textBox31">
+          <Style TextAlign="Right" VerticalAlign="Middle">
+            <Font Name="Tahoma" Size="8pt" Italic="True" />
+            <BorderStyle Top="Solid" />
+            <BorderWidth Default="0.5pt" />
+            <Padding Right="4pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="6.252in" Height="0.2in" Left="0in" Top="0in" Value="=Now()" Format="Avicenna HIS, Print Date : {0:dd-MM-yyyy HH:mm}" Name="textBox32">
+          <Style VerticalAlign="Middle">
+            <Font Name="Tahoma" Size="8pt" Italic="True" />
+            <BorderStyle Top="Solid" />
+            <BorderWidth Default="0.5pt" />
+            <Padding Left="5pt" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageFooterSection>
+    <ReportHeaderSection Height="0.042in" Name="reportHeaderSection1" />
+    <PageHeaderSection Height="1.067in" Name="pageHeaderSection1">
+      <Items>
+        <PictureBox Image="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" Width="67px" Height="67px" Left="0.1in" Top="0.1in" Sizing="ScaleProportional" MimeType="image/png" Name="pictureBox1" />
+        <TextBox Width="2.15in" Height="0.15in" Left="0.8in" Top="0.217in" Value="=Fields.HealthcareName" Name="textBox90">
+          <Style TextAlign="Left" VerticalAlign="Middle">
+            <Font Name="Tahoma" Size="8pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="4in" Height="0.15in" Left="0.8in" Top="0.367in" Value="=Fields.AddressLine1 + ', ' + Fields.AddressLine2 +' - ' +Fields.City" Name="textBox89">
+          <Style TextAlign="Left" VerticalAlign="Middle">
+            <Font Name="Tahoma" Size="8pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="4in" Height="0.15in" Left="0.8in" Top="0.517in" Value="='Telp. ' + Fields.PhoneNo +', Fax. ' + FaxNo" Name="textBox34">
+          <Style TextAlign="Left" VerticalAlign="Middle">
+            <Font Name="Tahoma" Size="8pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="6.283in" Height="0.2in" Left="2.2in" Top="0.867in" Value="=Fields.Periode" Name="textBox2">
+          <Style TextAlign="Center" VerticalAlign="Middle">
+            <Font Bold="True" />
+          </Style>
+        </TextBox>
+        <TextBox Width="6.283in" Height="0.2in" Left="2.2in" Top="0.667in" Value="=ReportName" Name="textBox1">
+          <Style TextAlign="Center" VerticalAlign="Middle">
+            <Font Size="12pt" Bold="True" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageHeaderSection>
+    <ReportFooterSection Height="3.406in" Name="reportFooterSection1">
+      <Items>
+        <Table DataSourceName="sqlDataSource1" Width="27.606cm" Height="2.757cm" Left="0.032cm" Top="0cm" RowHeadersPrintOnEveryPage="True" ColumnHeadersPrintOnEveryPage="True" FreezeColumnHeaders="False" Name="table1" StyleName="Normal.TableNormal">
+          <Body>
+            <Cells>
+              <TableCell RowIndex="1" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.815cm" Height="0.817cm" Left="0in" Top="0in" Value="=RowNumber()" Name="textBox27" StyleName="Normal.TableBody" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.746cm" Height="0.817cm" Left="0in" Top="0in" Value="=Fields.ItemID" Name="textBox28" StyleName="Normal.TableBody" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="4.699cm" Height="0.817cm" Left="0in" Top="0in" Value="=Fields.ItemName" Name="textBox29" StyleName="Normal.TableBody" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="5" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2cm" Height="0.817cm" Left="0in" Top="0in" Value="=Fields.CostPrice * Fields.InitialStock" Format="{0:N2}" Name="textBox35" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="10" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.527cm" Height="0.817cm" Left="0in" Top="0in" Value="=Fields.InitialStock + Fields.QuantityIn - Fields.QuantityOut" Format="{0:N2}" Name="textBox42" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="0" RowSpan="1" ColumnSpan="2">
+                <ReportItem>
+                  <TextBox Width="2.561cm" Height="0.513cm" Left="0in" Top="0in" Value="Bagian" Name="textBox23" StyleName="Normal.TableBody">
+                    <Style Color="192, 0, 0" VerticalAlign="Middle">
+                      <Font Bold="True" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="6" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.515cm" Height="0.817cm" Left="0in" Top="0in" Value="=Fields.QuantityIn" Format="{0:N2}" Name="textBox12" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.528cm" Height="0.817cm" Left="0in" Top="0in" Value="=Fields.InitialStock" Format="{0:N2}" Name="textBox14" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="8" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.476cm" Height="0.817cm" Left="0in" Top="0in" Value="=Fields.QuantityOut" Format="{0:N2}" Name="textBox16" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right">
+                      <Font Bold="False" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="9" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2.014cm" Height="0.817cm" Left="0in" Top="0in" Value="=Fields.CostPrice*Fields.QuantityOut" Format="{0:N2}" Name="textBox17" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="7" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.986cm" Height="0.817cm" Left="0in" Top="0in" Value="=Fields.CostPrice*Fields.QuantityIn" Format="{0:N2}" Name="textBox20" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="11" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.965cm" Height="0.817cm" Left="0in" Top="0in" Value="=Fields.CostPrice * (Fields.InitialStock + Fields.QuantityIn - Fields.QuantityOut)" Format="{0:N2}" Name="textBox21" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="12" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2.483cm" Height="0.817cm" Left="0in" Top="0in" Value="=Fields.CostPrice" Format="{0:N2}" Name="textBox6" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.815cm" Height="0.265cm" Left="0cm" Top="0cm" Name="textBox8" StyleName="Normal.TableBody" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.746cm" Height="0.265cm" Left="0cm" Top="0cm" Name="textBox9" StyleName="Normal.TableBody" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="4.699cm" Height="0.265cm" Left="0cm" Top="0cm" Name="textBox11" StyleName="Normal.TableBody" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.528cm" Height="0.265cm" Left="0cm" Top="0cm" Name="textBox22" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="5" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2cm" Height="0.265cm" Left="0cm" Top="0cm" Name="textBox24" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="6" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.515cm" Height="0.265cm" Left="0cm" Top="0cm" Name="textBox25" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="7" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.986cm" Height="0.265cm" Left="0cm" Top="0cm" Name="textBox30" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="8" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.476cm" Height="0.265cm" Left="0cm" Top="0cm" Name="textBox33" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="9" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2.014cm" Height="0.265cm" Left="0cm" Top="0cm" Name="textBox37" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="10" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.527cm" Height="0.265cm" Left="0cm" Top="0cm" Name="textBox38" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="11" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.965cm" Height="0.265cm" Left="0cm" Top="0cm" Name="textBox40" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="12" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2.483cm" Height="0.265cm" Left="0cm" Top="0cm" Name="textBox41" StyleName="Normal.TableBody">
+                    <Style TextAlign="Right" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="3.852cm" Height="0.265cm" Left="0in" Top="0in" Name="textBox49" StyleName="Normal.TableBody" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="3.852cm" Height="0.817cm" Left="13.768cm" Top="1.351cm" Value="= Fields.ItemGroupName" Name="textBox51" StyleName="Normal.TableBody" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="2" RowSpan="1" ColumnSpan="11">
+                <ReportItem>
+                  <TextBox Width="25.045cm" Height="0.513cm" Left="0in" Top="0in" Value="=Fields.ServiceUnitName + '/' + LocationName" Format=": {0}" Name="textBox48" StyleName="Normal.TableBody">
+                    <Style Color="192, 0, 0" VerticalAlign="Middle">
+                      <Font Bold="True" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+            </Cells>
+            <Columns>
+              <Column Width="0.815cm" />
+              <Column Width="1.746cm" />
+              <Column Width="3.852cm" />
+              <Column Width="4.699cm" />
+              <Column Width="1.528cm" />
+              <Column Width="2cm" />
+              <Column Width="1.515cm" />
+              <Column Width="1.986cm" />
+              <Column Width="1.476cm" />
+              <Column Width="2.014cm" />
+              <Column Width="1.527cm" />
+              <Column Width="1.965cm" />
+              <Column Width="2.483cm" />
+            </Columns>
+            <Rows>
+              <Row Height="0.513cm" />
+              <Row Height="0.817cm" />
+              <Row Height="0.265cm" />
+            </Rows>
+          </Body>
+          <Corner />
+          <Style>
+            <Font Size="8pt" />
+            <BorderStyle Default="None" />
+          </Style>
+          <RowGroups>
+            <TableGroup Name="ItemGroupName">
+              <ChildGroups>
+                <TableGroup Name="ServiceUnitName">
+                  <ChildGroups>
+                    <TableGroup Name="Group2" />
+                    <TableGroup Name="Detail">
+                      <Groupings>
+                        <Grouping />
+                      </Groupings>
+                    </TableGroup>
+                    <TableGroup Name="group" />
+                  </ChildGroups>
+                  <Groupings>
+                    <Grouping Expression="=Fields.ServiceUnitName" />
+                    <Grouping Expression="=Fields.LocationID" />
+                  </Groupings>
+                  <Sortings>
+                    <Sorting Expression="=Fields.ServiceUnitName" Direction="Asc" />
+                  </Sortings>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+          </RowGroups>
+          <ColumnGroups>
+            <TableGroup>
+              <ReportItem>
+                <TextBox Width="0.815cm" Height="1.162cm" Left="0in" Top="0in" Value="No." Name="textBox3" StyleName="Normal.TableHeader">
+                  <Style TextAlign="Left" VerticalAlign="Middle">
+                    <Font Bold="True" />
+                  </Style>
+                </TextBox>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="Group24" />
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup>
+              <ReportItem>
+                <TextBox Width="1.746cm" Height="1.162cm" Left="0in" Top="0in" Value="Kode Barang" Name="textBox4" StyleName="Normal.TableHeader">
+                  <Style TextAlign="Left" VerticalAlign="Middle">
+                    <Font Bold="True" />
+                  </Style>
+                </TextBox>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="Group25" />
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup Name="group1">
+              <ReportItem>
+                <TextBox Width="3.852cm" Height="1.162cm" Left="0in" Top="0in" Value="Item Group" Name="textBox19" StyleName="Normal.TableHeader">
+                  <Style VerticalAlign="Middle">
+                    <Font Bold="True" />
+                  </Style>
+                </TextBox>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="group2" />
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup>
+              <ReportItem>
+                <TextBox Width="4.699cm" Height="1.162cm" Left="0in" Top="0in" Value="Nama Barang" Name="textBox5" StyleName="Normal.TableHeader">
+                  <Style TextAlign="Left" VerticalAlign="Middle">
+                    <Font Bold="True" />
+                  </Style>
+                </TextBox>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="Group26" />
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup>
+              <ReportItem>
+                <TextBox Width="3.528cm" Height="0.585cm" Left="0in" Top="0in" Value="Saldo Awal" Name="textBox7" StyleName="Normal.TableHeader">
+                  <Style Color="Black" TextAlign="Center" VerticalAlign="Middle">
+                    <Font Bold="True" />
+                  </Style>
+                </TextBox>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="Group8">
+                  <ReportItem>
+                    <TextBox Width="1.528cm" Height="0.577cm" Left="0in" Top="0in" Value="Jumlah" Name="textBox36" StyleName="">
+                      <Style TextAlign="Right">
+                        <Font Bold="True" />
+                      </Style>
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="Group28" />
+                  </ChildGroups>
+                </TableGroup>
+                <TableGroup Name="Group9">
+                  <ReportItem>
+                    <TextBox Width="2cm" Height="0.577cm" Left="0in" Top="0in" Value="Nilai" Name="textBox39" StyleName="">
+                      <Style TextAlign="Right">
+                        <Font Bold="True" />
+                      </Style>
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="Group29" />
+                  </ChildGroups>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup>
+              <ReportItem>
+                <TextBox Width="3.501cm" Height="0.585cm" Left="0in" Top="0in" Value="Qty Masuk" Name="textBox10" StyleName="Normal.TableHeader">
+                  <Style TextAlign="Center" VerticalAlign="Middle">
+                    <Font Bold="True" />
+                  </Style>
+                </TextBox>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="Group10">
+                  <ReportItem>
+                    <TextBox Width="1.515cm" Height="0.577cm" Left="0in" Top="0in" Value="Jumlah" Name="textBox43" StyleName="">
+                      <Style TextAlign="Right">
+                        <Font Bold="True" />
+                      </Style>
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="Group30" />
+                  </ChildGroups>
+                </TableGroup>
+                <TableGroup Name="Group11">
+                  <ReportItem>
+                    <TextBox Width="1.986cm" Height="0.577cm" Left="0in" Top="0in" Value="Nilai" Name="textBox46" StyleName="">
+                      <Style TextAlign="Right">
+                        <Font Bold="True" />
+                      </Style>
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="Group31" />
+                  </ChildGroups>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup>
+              <ReportItem>
+                <TextBox Width="3.49cm" Height="0.585cm" Left="0in" Top="0in" Value="Qty Keluar" Name="textBox13" StyleName="Normal.TableHeader">
+                  <Style TextAlign="Center" VerticalAlign="Middle">
+                    <Font Bold="True" />
+                  </Style>
+                </TextBox>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="Group12">
+                  <ReportItem>
+                    <TextBox Width="1.476cm" Height="0.577cm" Left="0in" Top="0in" Value="Jumlah" Name="textBox50" StyleName="">
+                      <Style TextAlign="Right">
+                        <Font Bold="True" />
+                      </Style>
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="Group32" />
+                  </ChildGroups>
+                </TableGroup>
+                <TableGroup Name="Group13">
+                  <ReportItem>
+                    <TextBox Width="2.014cm" Height="0.577cm" Left="0in" Top="0in" Value="Nilai" Name="textBox53" StyleName="">
+                      <Style TextAlign="Right">
+                        <Font Bold="True" />
+                      </Style>
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="Group33" />
+                  </ChildGroups>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup>
+              <ReportItem>
+                <TextBox Width="3.492cm" Height="0.585cm" Left="0in" Top="0in" Value="Saldo Akhir" Name="textBox15" StyleName="Normal.TableHeader">
+                  <Style Color="Black" TextAlign="Center" VerticalAlign="Middle">
+                    <Font Bold="True" />
+                  </Style>
+                </TextBox>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="Group14">
+                  <ReportItem>
+                    <TextBox Width="1.527cm" Height="0.577cm" Left="0in" Top="0in" Value="Jumlah" Name="textBox55" StyleName="">
+                      <Style TextAlign="Right">
+                        <Font Bold="True" />
+                      </Style>
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="Group34" />
+                  </ChildGroups>
+                </TableGroup>
+                <TableGroup Name="Group15">
+                  <ReportItem>
+                    <TextBox Width="1.965cm" Height="0.577cm" Left="0in" Top="0in" Value="Nilai" Name="textBox56" StyleName="">
+                      <Style TextAlign="Right">
+                        <Font Bold="True" />
+                      </Style>
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="Group35" />
+                  </ChildGroups>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup>
+              <ReportItem>
+                <TextBox Width="2.483cm" Height="1.162cm" Left="0in" Top="0in" Value="HPR" Name="textBox18" StyleName="Normal.TableHeader">
+                  <Style TextAlign="Center" VerticalAlign="Middle">
+                    <Font Bold="True" />
+                  </Style>
+                </TextBox>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="Group36" />
+              </ChildGroups>
+            </TableGroup>
+          </ColumnGroups>
+        </Table>
+        <TextBox Width="3.626cm" Height="0.497cm" Left="23.6cm" Top="3.951cm" Value="=Sum(Fields.CostPrice*Fields.QuantityIn)" Format="{0:N2}" Name="textBox57" StyleName="Normal.TableBody">
+          <Style Visible="True" TextAlign="Right">
+            <Font Name="Tahoma" Size="8pt" />
+            <BorderStyle Bottom="None" Right="None" />
+            <BorderColor Bottom="Black" Right="Black" />
+            <BorderWidth Bottom="0.5pt" Right="0.5pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="3.626cm" Height="0.491cm" Left="23.6cm" Top="4.448cm" Value="=Sum(Fields.CostPrice*Fields.QuantityOut)" Format="{0:N2}" Name="textBox64" StyleName="Normal.TableBody">
+          <Style Visible="True" TextAlign="Right">
+            <Font Name="Tahoma" Size="8pt" />
+            <BorderStyle Bottom="None" Right="None" />
+            <BorderColor Bottom="Black" Right="Black" />
+            <BorderWidth Bottom="0.5pt" Right="0.5pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="3.626cm" Height="0.494cm" Left="23.6cm" Top="4.939cm" Value="= IIf((Fields.InitialStock + Fields.QuantityIn - Fields.QuantityOut &lt;= 0), Sum(Fields.CostPrice * (Fields.InitialStock + Fields.QuantityIn - Fields.QuantityOut)), Sum(Fields.CostPrice * (Fields.InitialStock + Fields.QuantityIn - Fields.QuantityOut)))" Format="{0:N2}" Name="textBox65" StyleName="Normal.TableBody">
+          <Style Visible="True" TextAlign="Right">
+            <Font Name="Tahoma" Size="8pt" />
+            <BorderStyle Bottom="None" Right="None" />
+            <BorderColor Bottom="Black" Right="Black" />
+            <BorderWidth Bottom="0.5pt" Right="0.5pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="3.626cm" Height="0.5cm" Left="23.6cm" Top="3.448cm" Value="=Sum(Fields.CostPrice * Fields.InitialStock)" Format="{0:N2}" Name="textBox63" StyleName="Normal.TableBody">
+          <Style Visible="True" TextAlign="Right">
+            <Font Name="Tahoma" Size="8pt" />
+            <BorderStyle Bottom="None" />
+            <BorderColor Bottom="Black" />
+            <BorderWidth Bottom="0.5pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.984cm" Height="0.497cm" Left="21.616cm" Top="3.453cm" Value="Nilai Awal" Name="textBox66" StyleName="Normal.TableBody">
+          <Style Visible="True" TextAlign="Left">
+            <Font Name="Tahoma" Size="8pt" Bold="True" />
+            <BorderStyle Bottom="None" Right="None" />
+            <BorderColor Bottom="Black" Right="Black" />
+            <BorderWidth Bottom="0.5pt" Right="0.5pt" />
+            <Padding Right="2pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.984cm" Height="0.497cm" Left="21.616cm" Top="3.951cm" Value="Nilai Masuk" Name="textBox71" StyleName="Normal.TableBody">
+          <Style Visible="True" TextAlign="Left">
+            <Font Name="Tahoma" Size="8pt" Bold="True" />
+            <BorderStyle Bottom="None" Right="None" />
+            <BorderColor Bottom="Black" Right="Black" />
+            <BorderWidth Bottom="0.5pt" Right="0.5pt" />
+            <Padding Right="2pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.984cm" Height="0.488cm" Left="21.616cm" Top="4.448cm" Value="Nilai Keluar" Name="textBox72" StyleName="Normal.TableBody">
+          <Style Visible="True" TextAlign="Left">
+            <Font Name="Tahoma" Size="8pt" Bold="True" />
+            <BorderStyle Bottom="None" Right="None" />
+            <BorderColor Bottom="Black" Right="Black" />
+            <BorderWidth Bottom="0.5pt" Right="0.5pt" />
+            <Padding Right="2pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.984cm" Height="0.497cm" Left="21.616cm" Top="4.936cm" Value="Nilai Akhir" Name="textBox73" StyleName="Normal.TableBody">
+          <Style Visible="True" TextAlign="Left">
+            <Font Name="Tahoma" Size="8pt" Bold="True" />
+            <BorderStyle Bottom="None" Right="None" />
+            <BorderColor Bottom="Black" Right="Black" />
+            <BorderWidth Bottom="0.5pt" Right="0.5pt" />
+            <Padding Right="2pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="3cm" Height="0.6cm" Left="22.9cm" Top="6.051cm" Value="=now()" Format="{0:dd MMMM yyyy}" Name="textBox44">
+          <Style>
+            <Font Name="Tahoma" Size="8pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="6cm" Height="0.6cm" Left="20.8cm" Top="7.951cm" Value="= &quot;KA. Instalasi &quot; + Fields.ServiceUnitName" Name="textBox45">
+          <Style>
+            <Font Name="Tahoma" Size="8pt" />
+          </Style>
+        </TextBox>
+        <TextBox Width="1.5cm" Height="0.6cm" Left="21.4cm" Top="6.051cm" Value="= Fields.City + &quot;,&quot;" Name="textBox47">
+          <Style>
+            <Font Name="Tahoma" Size="8pt" />
+          </Style>
+        </TextBox>
+      </Items>
+    </ReportFooterSection>
+  </Items>
+  <PageSettings PaperKind="A4" Landscape="True">
+    <Margins>
+      <MarginsU Left="1cm" Right="1cm" Top="0in" Bottom="0in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style Color="Black">
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <StyleSelector Type="Table" StyleName="Normal.TableNormal" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="p_FromDate" Type="DateTime" Text="Start Date" Visible="True">
+      <Value>
+        <String>=2025-01-01</String>
+      </Value>
+    </ReportParameter>
+    <ReportParameter Name="p_ToDate" Type="DateTime" Text="End Date" Visible="True">
+      <Value>
+        <String>=2025-03-01</String>
+      </Value>
+    </ReportParameter>
+    <ReportParameter Name="p_ItemType" Type="Integer" Text="Tipe Item" Visible="True">
+      <Value>
+        <String>=11</String>
+      </Value>
+    </ReportParameter>
+    <ReportParameter Name="p_LocationID" Text="Lokasi Gudang" Visible="True">
+      <Value>
+        <String>=''</String>
+      </Value>
+    </ReportParameter>
+  </ReportParameters>
+</Report>

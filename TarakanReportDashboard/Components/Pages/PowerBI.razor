@@ -1,4 +1,76 @@
 ﻿@page "/powerbi"
+@using Telerik.ReportViewer.BlazorNative
+@inject IJSRuntime JsInterop
 
-<h3>PowerBI</h3>
+@* Selected theme:
+<select value="@selectedTheme" @onchange="ChangeTheme" id="theme-switcher">
+    @foreach (var theme in blazorThemeNames)
+    {
+        <option value="@theme">@Capitalize(theme)</option>
+    }
+</select> *@
+
+<PageTitle>Report Viewer</PageTitle>
+@* <button type="button" class="btn btn-light btn-sm" @onclick="RefreshReport">Refresh Report</button> *@
+
+<ReportViewer ServiceUrl="/dashboardreport/api/reports" @ref="reportViewer1"
+              @bind-ReportSource="@ReportSource"
+              @bind-ScaleMode="@ScaleMode"
+              @bind-ViewMode="@ViewMode"
+              @bind-ParametersAreaVisible="@ParametersAreaVisible"
+              @bind-DocumentMapVisible="@DocumentMapVisible"
+              @bind-Scale="@Scale"
+              PageMode="@PageMode.ContinuousScroll"
+              EnableSendEmail="true"
+              ServiceType="@ReportViewerServiceType.REST"
+              Height="800px"
+              Width="100%">
+    
+</ReportViewer>
+
+@code {
+    public ScaleMode ScaleMode { get; set; } = ScaleMode.Specific;
+    public ViewMode ViewMode { get; set; } = ViewMode.Interactive;
+    public bool ParametersAreaVisible { get; set; }
+    public bool DocumentMapVisible { get; set; }
+    public double Scale { get; set; } = 1.0;
+    string[] blazorThemeNames = new[] { "default", "bootstrap", "fluent", "material" };
+    string selectedTheme { get; set; } = "default";
+    public ReportViewer reportViewer1 { get; set; }
+
+    public ReportSourceOptions ReportSource { get; set; } = new ReportSourceOptions("MutasiStock.trdx", new Dictionary<string, object>
+    {
+        // Add parameters if applicable
+    });
+
+    async Task ChangeTheme(ChangeEventArgs e)
+    {
+        // Set the URL to the Kendo theme - it can be a relative URL pointing to a local resource or to a custom theme
+        string newThemeUrl = $"_content/Telerik.UI.for.Blazor/css/kendo-theme-{e.Value}/all.css";
+        // call the JS interop that will switch out the <link> element
+        await JsInterop.InvokeVoidAsync("changeKendoTheme", new[] { newThemeUrl });
+    }
+
+    string Capitalize(string themeName) =>
+        string.IsNullOrWhiteSpace(themeName)
+            ? throw new ArgumentNullException(nameof(themeName))
+            : string.Concat(themeName[0].ToString().ToUpper(), themeName.AsSpan(1));
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var currentTheme = await JsInterop.InvokeAsync<string>("getCurrentBlazorTheme");
+            selectedTheme = blazorThemeNames.FirstOrDefault(name => currentTheme.Contains(name)) ?? "default";
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    void RefreshReport()
+    {
+        reportViewer1.ExecuteCommand("Refresh");
+    }
+
+}
 

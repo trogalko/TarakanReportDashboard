@@ -40,7 +40,7 @@ namespace TarakanReportDashboard.Services
                 signingCredentials: _signingCredentials
             ));
 
-            var refreshTokenDuration = new TimeSpan(hours: 0, minutes: 3, seconds: 0);
+            var refreshTokenDuration = new TimeSpan(hours: 1, minutes: 0, seconds: 0);
             var refreshTokenExpiresAt = now + refreshTokenDuration;
             var refreshToken = _tokenHandler.WriteToken(new JwtSecurityToken(
                 notBefore: now,

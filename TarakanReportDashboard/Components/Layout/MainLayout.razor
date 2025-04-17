@@ -1,10 +1,12 @@
 ﻿@inherits LayoutComponentBase
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using System.Globalization
 @* @inject IHttpContextAccessor ctxAccessor *@
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject ProtectedSessionStorage ProtectedSessionStore
 @implements IDisposable
+
 
 <div class="bb-page">
 
@@ -21,9 +23,11 @@
         </div>
 
         <div class="page">
-            <div class="content px-4">
-                @Body
-            </div>
+            <TelerikRootComponent>
+                <div class="content px-4">
+                    @Body
+                </div>
+            </TelerikRootComponent>
         </div>
         @* <article class="content px-4">
             <div class="py-2">Page content goes here</div>
@@ -45,6 +49,7 @@
     private bool isRunning = false;
     private System.Timers.Timer? timer;
     private DateTime startTime;
+    private readonly CancellationTokenSource _timerCancellationToken = new();
 
     private void StartTimer()
     {
@@ -74,58 +79,61 @@
 
     private async void OnTimerElapsed(object? sender, System.Timers.ElapsedEventArgs e)
     {
-        currentCount++;
+        // currentCount++;
 
-        elapsedTime = DateTime.Now - startTime;
+        // elapsedTime = DateTime.Now - startTime;
 
-        authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        if (authenticationState != null && authenticationState.User != null && authenticationState.User.Identity != null)
-        {
-            var claims = authenticationState.User.Claims;
-            foreach (var claim in claims)
-            {
-                if (claim.Type == "exp")
-                {
-                    var expDate = claim.Value;
-                    var expiredDateOffset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(expDate));
-                    var expiredDate = expiredDateOffset.LocalDateTime;
-                    if (expiredDate < DateTime.Now)
-                    {
-                        StopTimer();
-                        await ProtectedSessionStore.SetAsync("IsAuthenticated", false);
-                        await UserService.SignOutAsync();
-                        NavigationManager.NavigateTo("/auth/login", true);
-                        await InvokeAsync(StateHasChanged);
-                        break;
-                    }
-                    else
-                    {
-                        isAuthenticated = authenticationState.User.Identity.IsAuthenticated;
-                        await ProtectedSessionStore.SetAsync("IsAuthenticated", isAuthenticated);
-                    }
-                }
-            }
-        }
-        else
-        {
-            StopTimer();
-            await ProtectedSessionStore.SetAsync("IsAuthenticated", false);
-            await UserService.SignOutAsync();
-            NavigationManager.NavigateTo("/auth/login", true);
-        }
-        if (currentCount >= 30)
-        {
-            StopTimer();
-        }
+        // authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        // if (authenticationState != null && authenticationState.User != null && authenticationState.User.Identity != null)
+        // {
+        //     var claims = authenticationState.User.Claims;
+        //     foreach (var claim in claims)
+        //     {
+        //         if (claim.Type == "exp")
+        //         {
+        //             var expDate = claim.Value;
+        //             var expiredDateOffset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(expDate));
+        //             var expiredDate = expiredDateOffset.LocalDateTime;
+        //             if (expiredDate < DateTime.Now)
+        //             {
+        //                 StopTimer();
+        //                 await ProtectedSessionStore.SetAsync("IsAuthenticated", false);
+        //                 await UserService.SignOutAsync();
+        //                 NavigationManager.NavigateTo("/auth/login", true);
+        //                 //await InvokeAsync(StateHasChanged);
+        //                 break;
+        //             }
+        //             else
+        //             {
+        //                 try
+        //                 {
+        //                     isAuthenticated = authenticationState.User.Identity.IsAuthenticated;
+        //                     await ProtectedSessionStore.SetAsync("IsAuthenticated", isAuthenticated);
+        //                 }
+        //                 catch (TaskCanceledException ex)
+        //                 {
+        //                     Console.WriteLine(ex.Message);
+        //                 }                    
+        //             }
+        //         }
+        //     }
+        // }
+        // else
+        // {
+        //     StopTimer();
+        //     await ProtectedSessionStore.SetAsync("IsAuthenticated", false);
+        //     await UserService.SignOutAsync();
+        //     NavigationManager.NavigateTo("/auth/login", true);
+        // }
 
-        // Use SynchronizationContext to marshal back to the UI thread
-        await InvokeAsync(StateHasChanged);
-    }
+        // if (currentCount >= 30)
+        // {
+        //     StopTimer();
+        // }
 
-    public void Dispose()
-    {
-        timer?.Dispose();
-    }
+        // // Use SynchronizationContext to marshal back to the UI thread
+        // //await InvokeAsync(StateHasChanged);
+    }    
     //End Timer Related
 
     private async Task<Sidebar2DataProviderResult> Sidebar2DataProvider(Sidebar2DataProviderRequest request)
@@ -141,21 +149,23 @@
 
     private async Task<IEnumerable<NavItem>> GetNavItems()
     {
-        var isAuth = await ProtectedSessionStore.GetAsync<bool>("IsAuthenticated");        
+        var isAuth = await ProtectedSessionStore.GetAsync<bool>("IsAuthenticated");     
+        var _navItems = new List<NavItem>();
         navItems = new List<NavItem>
         {
             new NavItem { Id = "1", Href = "/getting-started", IconName = IconName.HouseDoorFill, Text = "Dashboard Management"},
 
-            new NavItem { Id = "2", IconName = IconName.LayoutSidebarInset, Text = "Dashboard Report", IconColor = IconColor.Primary },
-            new NavItem { Id = "2.1", Href = "/icons", IconName = IconName.PersonSquare, Text = "Nurses", ParentId="2"},
-            new NavItem { Id = "2.2", Href = "/icons", IconName = IconName.PersonSquare, Text = "Doctors", ParentId="2"},
-            new NavItem { Id = "2.3", Href = "/icons", IconName = IconName.PersonSquare, Text = "Finances", ParentId="2"},
-            new NavItem { Id = "2.4", Href = "/icons", IconName = IconName.PersonSquare, Text = "Administrations", ParentId="2"},
+            // new NavItem { Id = "2", IconName = IconName.LayoutSidebarInset, Text = "Dashboard Report", IconColor = IconColor.Primary },
+            // new NavItem { Id = "2.1", Href = "/icons", IconName = IconName.PersonSquare, Text = "Nurses", ParentId="2"},
+            // new NavItem { Id = "2.2", Href = "/icons", IconName = IconName.PersonSquare, Text = "Doctors", ParentId="2"},
+            // new NavItem { Id = "2.3", Href = "/icons", IconName = IconName.PersonSquare, Text = "Finances", ParentId="2"},
+            // new NavItem { Id = "2.4", Href = "/icons", IconName = IconName.PersonSquare, Text = "Administrations", ParentId="2"},
 
             new NavItem { Id = "3", IconName = IconName.Gear, Text = "Setting", IconColor = IconColor.Success },
             new NavItem { Id = "3.1", Href = "/alerts", IconName = IconName.CheckCircleFill, Text = "Account", ParentId="3"},
             new NavItem { Id = "3.2", Href = "/breadcrumb", IconName = IconName.SegmentedNav, Text = "Breadcrumb", ParentId="3"},
 
+            new NavItem { Id = "4", IconName = IconName.Alipay, Text = "Alipay", IconColor = IconColor.Success },
             new NavItem { Id = "7", IconName = IconName.ListNested, Text = "Sidebar 2", ParentId="4"},
             new NavItem { Id = "701", Href = "/sidebar2/how-to-use", IconName = IconName.Dash, Text = "How to use", ParentId="7"},
 
@@ -174,12 +184,27 @@
             // new NavItem { Id = "12", Href = "/number-input", IconName = IconName.InputCursor, Text = "Number Input", ParentId="9"},
             // new NavItem { Id = "13", Href = "/switch", IconName = IconName.ToggleOn, Text = "Switch", ParentId="9"},
         };
+        _navItems.Clear();
+        if (isAuth.Value)
+        {
+            _navItems = navItems.ToList();
+            //_navItems.Add(new NavItem { Id = "1", Href = "/getting-started", IconName = IconName.HouseDoorFill, Text = "Dashboard Management" });
+            _navItems.Add(new NavItem { Id = "2", IconName = IconName.LayoutSidebarInset, Text = "Dashboard Report", IconColor = IconColor.Primary });
+            _navItems.Add(new NavItem { Id = "2.1", Href = "/icons", IconName = IconName.PersonSquare, Text = "Nurses", ParentId = "2" });
+            _navItems.Add(new NavItem { Id = "2.2", Href = "/icons", IconName = IconName.PersonSquare, Text = "Doctors", ParentId = "2" });
+            _navItems.Add(new NavItem { Id = "2.3", Href = "/icons", IconName = IconName.PersonSquare, Text = "Finances", ParentId = "2" });
+            _navItems.Add(new NavItem { Id = "2.4", Href = "/icons", IconName = IconName.PersonSquare, Text = "Administrations", ParentId = "2" });
+            _navItems.Sort((x, y) => string.Compare(x.Id, y.Id));
+            navItems = _navItems;            
+        }
 
         return navItems;
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
+        SetDefaultCulture();
+        return base.OnInitializedAsync();
         // authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         // if (authenticationState != null && authenticationState.User != null && authenticationState.User.Identity != null)
         // {
@@ -188,20 +213,84 @@
         // }
     }
 
+    private void SetDefaultCulture()
+    {
+        var culture = new CultureInfo("en-US");
+
+        CultureInfo.DefaultThreadCurrentCulture = culture;
+        CultureInfo.DefaultThreadCurrentUICulture = culture;
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            using var timer = new PeriodicTimer(TimeSpan.FromSeconds(120));
+            while (!_timerCancellationToken.IsCancellationRequested && await timer.WaitForNextTickAsync())
+            {
+                authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+                if (authenticationState != null && authenticationState.User != null && authenticationState.User.Identity != null)
+                {
+                    var claims = authenticationState.User.Claims;
+                    foreach (var claim in claims)
+                    {
+                        if (claim.Type == "exp")
+                        {
+                            var expDate = claim.Value;
+                            var expiredDateOffset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(expDate));
+                            var expiredDate = expiredDateOffset.LocalDateTime;
+                            if (expiredDate < DateTime.Now)
+                            {
+                                StopTimer();
+                                await ProtectedSessionStore.SetAsync("IsAuthenticated", false);
+                                await UserService.SignOutAsync();
+                                NavigationManager.NavigateTo("/auth/login", true);
+                                await InvokeAsync(StateHasChanged);
+                                break;
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    isAuthenticated = authenticationState.User.Identity.IsAuthenticated;
+                                    await ProtectedSessionStore.SetAsync("IsAuthenticated", isAuthenticated);
+                                }
+                                catch (TaskCanceledException ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
+                            }
+                        }
+                    }
+                }
+                await InvokeAsync(StateHasChanged);
+            }
+
+
             authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             if (authenticationState != null && authenticationState.User != null && authenticationState.User.Identity != null)
             {
                 isAuthenticated = authenticationState.User.Identity.IsAuthenticated;
                 await ProtectedSessionStore.SetAsync("IsAuthenticated", isAuthenticated);
             }
+            else
+            {
+                StopTimer();
+                await ProtectedSessionStore.SetAsync("IsAuthenticated", false);
+                await UserService.SignOutAsync();
+                NavigationManager.NavigateTo("/auth/login", true);
+            }
         }
         StartTimer();
+    }  
+    
+    public void Dispose()
+    {
+        timer?.Dispose();
+        _timerCancellationToken.Cancel();
+        _timerCancellationToken.Dispose();
+        GC.SuppressFinalize(this);
     }
-
 }
 
        
